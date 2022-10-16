@@ -67,7 +67,7 @@ a{
 }
 
 .product_button{
-    margin-top:40px;
+    margin-top:20px;
     min-width:200px;
     background-color:#4169E1;
     border:2px solid #4169E1;
@@ -182,4 +182,24 @@ a{
     position: relative;
     left: 50%;
     transform: translate(-50%, 0);
+}
+
+.counter{
+    display:flex;
+    border: 2px solid lightgray;
+    border-radius: 3px;
+    width: fit-content;
+    margin-top: 30px;
+}
+
+.counter-number{
+    border-left: 2px solid lightgray;
+    border-right: 2px solid lightgray;
+    padding: 5px 20px;
+    background-color: #f3f3f3;
+
+}
+
+.counter-sign{
+    padding: 5px 10px;
 }
