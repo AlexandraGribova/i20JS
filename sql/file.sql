@@ -16,6 +16,12 @@ CREATE TABLE Product_section
     id_product INT
 );
 
+CREATE TABLE Product_main_section
+(
+	id_main_section INT,
+    id_product INT
+);
+
 CREATE TABLE Full_product
 (
 	id_product INT AUTO_INCREMENT,
