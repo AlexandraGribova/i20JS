@@ -5,9 +5,8 @@
 SELECT Section.*, count(Product_section.id_product) as number FROM Section
     JOIN Product_section ON Section.id_section=Product_section.id_section
     JOIN Full_product on Full_product.id_product=Product_section.id_product
-    WHERE Full_product.is_active=true
-    GROUP BY Product_section.id_section
-    HAVING count(Product_section.id_product)<>0
+    WHERE Full_product.is_active=1
+    GROUP BY Product_section.id_section 
     ORDER BY number desc;
 
 
@@ -18,19 +17,17 @@ SELECT Section.*, count(Product_section.id_product) as number FROM Section
 
 /*Для раздела 1 (на месте 1 будет айдишник полученный гетом) 
 выводит заголовок и описание*/
-SELECT DISTINCT Section.title, Section.description_section FROM Full_product 
-JOIN Product_section ON Product_section.id_product=Full_product.id_product 
-JOIN Section ON Section.id_section= Product_section.id_section  
-WHERE  Product_section.id_section=1 AND Full_product.is_active=true;
+SELECT DISTINCT Section.title, Section.description_section FROM Section  
+WHERE  Section.id_section=1;
 
 /*Для раздела 1 выводит 12 записей и инфу по каждому товару
 название, главный раздел, картинка анонса*/
 SELECT Full_product.title, Section.title, Img.img, IMG.alt FROM Full_product 
-JOIN Product_main_section ON Product_main_section.id_product=Full_product.id_product 
-JOIN Section ON Section.id_section=Product_main_section.id_main_section 
+JOIN Product_section ON Product_section.id_product=Full_product.id_product 
+JOIN Section ON Section.id_section=Product_section.id_section 
 JOIN Product_main_img ON Full_product.id_product=Product_main_img.id_product 
 JOIN Img ON Img.id_img=Product_main_img.id_img 
-WHERE Section.id_section=1 
+WHERE Section.id_section=1 AND Full_product.is_active=1 
 limit 12;
 
 
@@ -51,15 +48,20 @@ JOIN Product_section ON Product_section.id_product=Full_product.id_product
 JOIN Section ON Section.id_section=Product_section.id_section 
 WHERE Full_product.id_product=3;
 
+/*Главный раздел для товара*/
+SELECT Section.title FROM Full_product 
+JOIN Product_main_section ON Product_main_section.id_product=Full_product.id_product 
+JOIN Section ON Section.id_section=Product_main_section.id_main_section 
+WHERE Full_product.id_product=3;
+
+
 /*Выборка основной картинки*/
 SELECT Img.img, Img.alt FROM Img 
 JOIN Product_main_img ON Img.id_img=Product_main_img.id_img 
-JOIN Full_product ON Full_product.id_product=Product_main_img.id_product 
-WHERE Full_product.id_product=3;
+WHERE Product_main_img.id_product=3;
 
 /*Выборка доп картинок*/
 SELECT Img.img, Img.alt FROM Img 
 JOIN Product_other_img ON Img.id_img=Product_other_img.id_img 
-JOIN Full_product ON Full_product.id_product=Product_other_img.id_product 
-WHERE Full_product.id_product=3;
+WHERE Product_other_img.id_product=3;
 
