@@ -9,14 +9,13 @@ VALUES
 
 INSERT INTO Product_section(id_section, id_product)
 VALUES
-(1, 1),(1, 2),(1, 3),
-(1, 4),(1, 5),(1, 6),
-(1, 7),(1, 8),(1, 9),
-(1, 10),(1, 11),(1, 12),
-(1, 13),(1, 14),(2, 15),
-(2, 16),(3, 17),(3, 18),
-(3,19);
+(3, 3), (3, 11), (3,10);
 
+INSERT INTO Product_main_section (id_main_section, id_product)
+VALUES
+(1, 1),(1, 2),(1, 3), (1, 4), (1, 5), (1, 6), (1, 7),
+(1, 8),(1, 9),(1, 10), (1, 11), (1, 12), (1, 13), (1, 14),
+(2, 15), (2, 16), (3, 17), (3, 18), (3,19);
 
 INSERT INTO Full_product (title, price, price_without_discont, price_with_promo, description_product, is_active)
 VALUES
@@ -40,11 +39,6 @@ VALUES
 ('Стеганая куртка', 7000, 11000, 6543, 'Состав: 100% полиамид, 100% полиэстер, 100% полиэстер. Страна-производитель: КИТАЙ', true),
 ('Куртка с капюшоном', 9000, 15000, 7543, 'Состав: 100% полиэстер, 100% полиэстер, 100% полиэстер. Страна-производитель: КИТАЙ', true);
 
-INSERT INTO Product_main_section (id_main_section, id_product)
-VALUES
-(1, 1),(1, 2),(1, 3), (1, 4), (1, 5), (1, 6), (1, 7),
-(1, 8),(1, 9),(1, 10), (1, 11), (1, 12), (1, 13), (1, 14),
-(2, 15), (2, 16), (3, 17), (3, 18), (3,19);
 
 INSERT INTO Product_other_img(id_product, id_img)
 VALUES
