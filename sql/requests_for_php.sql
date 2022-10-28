@@ -37,7 +37,7 @@
 	JOIN Product_main_img as p_m_i ON f_p.id_product=p_m_i.id_product 
 	JOIN Img ON Img.id_img=p_m_i.id_img 
 	WHERE p_s_union.id_section=3 AND f_p.is_active=1 
-	limit 12;
+	limit 12, 12;
 
 
 
@@ -51,14 +51,10 @@
 	f_p.price_without_discont, f_p.price_with_promo FROM Full_product as f_p 
 	WHERE f_p.id_product=3;
 
-	/*В каких разделах лежит товар*/
-	SELECT s.title FROM Section as s 
-	JOIN (
-		(SELECT p_s.* FROM Product_section as p_s ) 
-		UNION 
-		(SELECT p_m_s.* FROM Product_main_section as p_m_s) 
-	) as p_s_union on p_s_union.id_section=s.id_section 
-	WHERE p_s_union.id_product=3;
+	/*В каких разделах, коме главного, лежит товар*/
+	SELECT * FROM Section as s 
+	JOIN product_section as p_s ON s.id_section=p_s.id_section 
+	WHERE p_s.id_product=3;
 
 	/*Главный раздел для товара*/
 	SELECT s.title FROM Product_main_section as p_m_s 
@@ -68,7 +64,7 @@
 
 	/*Выборка основной картинки*/
 	SELECT Img.img, Img.alt FROM Img 
-	JOIN p_m_i as p_m_i ON Img.id_img=p_m_i.id_img 
+	JOIN Product_main_img as p_m_i ON Img.id_img=p_m_i.id_img 
 	WHERE p_m_i.id_product=3;
 
 	/*Выборка доп картинок*/
