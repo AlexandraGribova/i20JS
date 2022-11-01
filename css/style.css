@@ -3,15 +3,16 @@ body{
     font-size:13px;
 }
 
-h1{
-    text-transform: uppercase;
-    font-weight: 900;
-    letter-spacing: 3px;
-}
+
 
 a{
     text-decoration: none;
     color:cornflowerblue;
+}
+
+.conteiner{
+    display:flex;
+    justify-content: space-between;
 }
 
 .content{
@@ -203,3 +204,140 @@ a{
 .counter-sign{
     padding: 5px 10px;
 }
+
+.show-img {
+    max-height: 120px;
+    margin-top: 15px;
+}
+
+.show-img:first-child{
+    margin-top:0;
+}
+
+.first-card{
+    display:block;
+    border: 3px solid grey;
+    background-color:white;
+    border-radius:5px;
+    font-family: 'Noto Sans Ethiopic', sans-serif;
+    width:70%;
+    padding:10px 20px;
+    margin:10px;
+    transition: transform 0.25s;
+}
+
+.first-card:hover{
+    transform: scale(1.1);
+}
+
+.first-card_time{
+    text-align: right;
+    display:block;
+    color: black;
+}
+
+
+.first-card_text{
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size:19px;
+    letter-spacing: 1.5px;
+    color:black;
+}
+
+.second-card{
+    display: flex;   
+    flex-flow:wrap;
+    background-color: #eeeeee;
+    font-family: 'Roboto Condensed', sans-serif;
+    margin:10px;;
+}
+
+.second-card a{
+    
+    width:calc( 100%  / 3 );
+}
+
+.second-card_1{
+    margin:25px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.5);     
+    transition: transform 0.15s;
+}
+
+.second-card_1:hover{
+    transform: scale(1.05);
+}
+
+
+.second-card_text{
+    height:3em;
+    line-height: 3em;
+    width:auto;
+    background-color: white;
+    padding: 10px;
+    border: 1px solid #f3f3f3;
+    
+}
+
+.second-card_1 img{
+    width: 100%;
+}
+
+.second_card_img{
+    height:350px;
+    overflow: hidden;
+    background-color: white;
+}
+
+.pagination{
+    display: flex;
+    justify-content: center;
+}
+
+.pagination a{
+    color:black;
+}
+
+.pagination-elem{
+    border: 1px solid lightgray;
+    border-radius: 50%;
+    padding: 5px 10px;
+    margin:5px;
+
+}
+
+
+.href-button:hover{
+    background-color: #f3f3f3;
+}
+
+ul.breadcrumb {
+    padding: 10px 16px;
+    margin:10px;
+    list-style: none;
+    background-color: #f3f3f3;
+  }
+  
+  /* Отображение элементов списка бок о бок */
+  ul.breadcrumb li {
+    display: inline;
+    font-size: 18px;
+  }
+  
+  /* Добавить символ косой черты (/) перед/за каждым элементом списка */
+  ul.breadcrumb li+li:before {
+    padding: 8px;
+    color: black;
+    content: "/\00a0";
+  }
+  
+  /* Добавить цвет для всех ссылок внутри списка */
+  ul.breadcrumb li a {
+    color: dimgray;
+    text-decoration: none;
+  }
+  
+  /* Добавить цвет на наведении курсора мыши */
+  ul.breadcrumb li a:hover {
+    color: black;
+  }

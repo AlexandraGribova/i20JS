@@ -2,7 +2,7 @@
 	его параметры и сколько товаров (активных) в нем,
 	если в данном разделе вообще есть активные товары,
 	выстраивает эти разделы в порядке убывания по числу товаров внутри*/
-	SELECT s.*, count(p_s_union.id_product) as number FROM Section as s 
+	SELECT count(p_s_union.id_product) as number FROM Section as s 
 	JOIN (
 		(SELECT p_s.* FROM Product_section as p_s ) 
 		UNION 
@@ -10,13 +10,23 @@
 	) as p_s_union on p_s_union.id_section=s.id_section 
 	JOIN Full_product as f_p on f_p.id_product=p_s_union.id_product 
 	WHERE f_p.is_active=1 
-	GROUP BY p_s_union.id_section 
-	ORDER BY number desc;
+	GROUP BY p_s_union.id_section;
 
 
 
 	/*При переходе в конкретный раздел*/
-
+    
+    /*Id разделов которые существуют и не пустые*/	
+    (SELECT p_s_union.id_section FROM (
+		(SELECT p_s.* FROM Product_section as p_s 
+        JOIN full_product as f_p ON f_p.id_product = p_s.id_product
+        WHERE f_p.is_active=1) 
+		UNION 
+		(SELECT p_m_s.* FROM Product_main_section as p_m_s
+        JOIN full_product as f_p ON f_p.id_product = p_m_s.id_product
+        WHERE f_p.is_active=1) 
+	) as p_s_union 
+    GROUP BY id_section);
 
 
 	/*Для раздела 1 (на месте 1 будет айдишник полученный гетом) 
@@ -26,7 +36,7 @@
 
 	/*Для раздела 1 выводит 12 записей и инфу по каждому товару
 	название, главный раздел, картинка анонса*/
-	SELECT f_p.title, s.title, Img.img, Img.alt FROM Full_product as f_p 
+	SELECT f_p.title, s.title as main_section, Img.img, Img.alt FROM Full_product as f_p 
     JOIN (
 		(SELECT p_s.* FROM Product_section as p_s ) 
 		UNION 
@@ -37,7 +47,7 @@
 	JOIN Product_main_img as p_m_i ON f_p.id_product=p_m_i.id_product 
 	JOIN Img ON Img.id_img=p_m_i.id_img 
 	WHERE p_s_union.id_section=3 AND f_p.is_active=1 
-	limit 12, 12;
+	limit 12;
 
 
 

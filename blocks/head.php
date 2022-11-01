@@ -1,20 +1,8 @@
-<?php
-$hostName = "localhost";
-$userName = "root";
-$password = "root";
-$bdName="i20store";
-    $conn = new mysqli($hostName, $userName, $password, $bdName);
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-      } 
-?>
-
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>    
     <script type="text/javascript" src="noty/js/jquery.noty.js"></script>

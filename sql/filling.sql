@@ -71,9 +71,9 @@ VALUES
 
 INSERT INTO Img (img, alt)
 VALUES
-('shirt.png', 'вещь'),
-('shirt-2.jpg', 'вещь'),
-('shirt-3.jpg', 'вещь'),
+('../img/shirt.png', 'вещь'),
+('../img/shirt-2.jpg', 'вещь'),
+('../img/shirt-3.jpg', 'вещь'),
 ('https://a.lmcdn.ru/img600x866/M/P/MP002XW0KVO1_18033464_1_v1_2x.jpeg', 'вещь'),
 ('https://a.lmcdn.ru/img600x866/M/P/MP002XW0KVO1_18033466_2_v1_2x.jpeg', 'вещь'),
 ('https://a.lmcdn.ru/img600x866/M/P/MP002XW0KVO1_18033470_4_v1_2x.jpeg', 'вещь'),
