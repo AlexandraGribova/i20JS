@@ -3,7 +3,11 @@
     if(isset($_GET['id_product']))
     {
         $id_product=$_GET['id_product'];
-
+        if (empty($id_product))
+    {
+        header('Location: http:/i20.local/pages/404_page.php');
+        exit;
+    }
         $sql = "SELECT F_p.id_product FROM Full_product as f_p 
             WHERE f_p.is_active = 1 AND f_p.id_product=$id_product";
 
@@ -17,32 +21,25 @@
         }
         
     }
-    if (isset($_GET['id_section'])){
-        $id_this_section = $_GET['id_section'];
-    
-    //обработка get запроса. если переданный id не сущщесвтует - 404
-    
-    $sql = "SELECT p_s_union.id_section FROM (
-        (SELECT p_s.* FROM Product_section as p_s 
-        JOIN full_product as f_p ON f_p.id_product = p_s.id_product
-        WHERE f_p.is_active=1) 
-        UNION 
-        (SELECT p_m_s.* FROM Product_main_section as p_m_s
-        JOIN full_product as f_p ON f_p.id_product = p_m_s.id_product
-        WHERE f_p.is_active=1) 
-        ) as p_s_union 
-        WHERE p_s_union.id_section = $id_this_section  
-        GROUP BY id_section";
-    
-        $sth = $conn->prepare($sql);
-        $sth->execute();
-        $array = $sth->fetchAll(PDO::FETCH_ASSOC);
-        if(count($array)==0)
-            {
-                header('Location: http:/i20.local/pages/404_page.php');
-                exit;
-            }
+    else{
+        header('Location: http:/i20.local/pages/404_page.php');
+            exit;
     }
+
+
+    //чтобы понять id раздела из которого мы пришли
+    $parts = parse_url($_SERVER['HTTP_REFERER']); 
+    parse_str($parts['query'], $query); 
+    if(count($query)==1)
+    {
+        $id_this_section=$query['id'];            
+    }
+    else
+    {
+        header('Location: http:/i20.local/pages/404_page.php');
+        exit;
+    }
+
     //поиск категории
     $sql="	SELECT s.title FROM Product_main_section as p_m_s 
 	        JOIN Section as s ON s.id_section=p_m_s.id_main_section 
@@ -112,14 +109,16 @@
         $this_section=$array[0]['title'];
         }
 
+
 ?>
 
 <h1><?php echo $title?></h1>
 <ul class="breadcrumb" style="margin: 25px 0;">
             <li><a href="../index.php">Категории</a></li>
-            <li><a href="section_page.php?id=<?php echo $id_this_section ?>"><?php echo $this_section?></a></li>
+            <li><a href="<?php echo  $_SERVER['HTTP_REFERER']?>"><?php echo $this_section?></a></li>
             <li><a href=""><?php echo $title ?></a></li>
 </ul>
+
 
 <div class="product">    
             <div class="product_img"> 

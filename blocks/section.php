@@ -5,6 +5,11 @@ require "../modules/bd.php";
     if (isset($_GET['id']))
     {
     $page_id = $_GET['id'];
+    if (empty($page_id))
+    {
+        header('Location: http:/i20.local/pages/404_page.php');
+        exit;
+    }
 
 //обработка get запроса. если переданный id не сущщесвтует - 404
 
@@ -25,6 +30,10 @@ $sql = "SELECT p_s_union.id_section FROM (
             header('Location: http:/i20.local/pages/404_page.php');
             exit;
         }
+    }
+    else{
+        header('Location: http:/i20.local/pages/404_page.php');
+            exit;
     }
 
 
@@ -122,7 +131,7 @@ if(count($array_descr_section) > 0){
                     $alt=$array_pag[$i]["alt"];
                     $id_product=$array_pag[$i]["id_product"];
                     ?>
-                    <a href="product_page.php?id_product=<?php echo $id_product?>&id_section=<?php echo  $page_id?>">
+                    <a href="product_page.php?id_product=<?php echo $id_product?>">
                     <div class="second-card_1">
                         <div class="second_card_img"><img src="<?php echo $img ?>" alt="<?php echo $alt ?>"></div>
                         <div class="second-card_text"><?php echo $title ?></div>
