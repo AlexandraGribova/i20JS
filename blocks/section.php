@@ -1,63 +1,45 @@
 <?php
 require "../modules/bd.php";
+//id раздела
 
-if (isset($_GET['id'])){
+    if (isset($_GET['id']))
+    {
     $page_id = $_GET['id'];
 
-
+//обработка get запроса. если переданный id не сущщесвтует - 404
 
 $sql = "SELECT p_s_union.id_section FROM (
-    (SELECT p_s.* FROM Product_section as p_s 
-    JOIN full_product as f_p ON f_p.id_product = p_s.id_product
-    WHERE f_p.is_active=1) 
+    SELECT p_s.* FROM Product_section as p_s
     UNION 
-    (SELECT p_m_s.* FROM Product_main_section as p_m_s
-    JOIN full_product as f_p ON f_p.id_product = p_m_s.id_product
-    WHERE f_p.is_active=1) 
+    SELECT p_m_s.* FROM Product_main_section as p_m_s 
     ) as p_s_union 
-    WHERE p_s_union.id_section = $page_id  
+    JOIN full_product as f_p ON f_p.id_product = p_s_union.id_product
+    WHERE f_p.is_active=1 AND  p_s_union.id_section = $page_id  
     GROUP BY id_section";
-    if($result = $conn->query($sql))
-    {
-        if($result->num_rows <= 0)
+
+    $sth = $conn->prepare($sql);
+    $sth->execute();
+    $array = $sth->fetchAll(PDO::FETCH_ASSOC);
+    if(count($array)==0)
         {
-            header('Location: 404_page.php');
+            header('Location: http:/i20.local/pages/404_page.php');
             exit;
         }
     }
-}
 
-?>
-    <?php
+
+
+//Вывод названия и описания раздела
         $sql="SELECT s.title, s.description_section FROM Section as s 
         WHERE  s.id_section=$page_id";
-        if($result = $conn->query($sql)){
-            if($result->num_rows > 0){
-                foreach($result as $row){
-                    $title = $row["title"];
-                    $description = $row["description_section"];
-                    ?>
-                    <div>
-                    <h1><?php echo $title ?></h1>
-                    <p><?php echo $description ?></p>  
-                    </div>               
-                    <?php
-                }
-            }
-        }
-        ?>
-        <ul class="breadcrumb">
-            <li><a href="../index.php">Категории</a></li>
-            <li><?php echo $title ?></li>
-        </ul>
-        
+        $sth = $conn->prepare($sql);
+        $sth->execute();
+        $array_descr_section = $sth->fetchAll(PDO::FETCH_ASSOC);
 
 
-        <div class="second-card">
-        <?php
-        
+//описание постраничной навигации
 
-        $sql = "SELECT count(p_s_union.id_product) as number FROM Section as s 
+$sql = "SELECT count(p_s_union.id_product) as number FROM Section as s 
                 JOIN (
                     (SELECT p_s.* FROM Product_section as p_s ) 
                     UNION 
@@ -66,30 +48,26 @@ $sql = "SELECT p_s_union.id_section FROM (
                 JOIN Full_product as f_p on f_p.id_product=p_s_union.id_product 
                 WHERE f_p.is_active=1 AND  p_s_union.id_section = $page_id
                 GROUP BY p_s_union.id_section";
-                
-        if($result = $conn->query($sql))//query - выполнение запроса
-        {
-            if($result->num_rows > 0)
-            {
-                $row = $result ->fetch_assoc();
-                $number = $row['number'];
-                
-            }
-        }     
-            
+         $sth = $conn->prepare($sql);
+         $sth->execute();
+         $number = $sth->fetch(PDO::FETCH_COLUMN);        
+         $kol=12;
+         $page_quantity = ceil($number/$kol);
 
         if(isset($_GET["page"]))
         {
             $page = $_GET["page"];
+            if($page> $page_quantity)
+            {
+                header('Location: http:/i20.local/pages/404_page.php');
+                exit;
+            }
         }
         else
             $page = 1;
 
-        $kol=12;
-        $art = ($page * $kol) - $kol; // определяем, с какой записи нам выводить        
+        $art = ($page * $kol) - $kol; // определяем, с какой записи нам выводить     
 
-        $page_quantity = ceil($number/$kol);
-    
 
         $sql =  "SELECT f_p.id_product, f_p.title, s.title as main_section, Img.img, Img.alt FROM Full_product as f_p 
                 JOIN (
@@ -104,14 +82,45 @@ $sql = "SELECT p_s_union.id_section FROM (
                 WHERE p_s_union.id_section=$page_id AND f_p.is_active=1
                 limit $art,$kol";
         
-        if($result = $conn->query($sql)){
-            if($result->num_rows > 0){
-                foreach($result as $row){
-                    $title=$row["title"];
-                    $main_section=$row["main_section"];
-                    $img=$row["img"];
-                    $alt=$row["alt"];
-                    $id_product=$row["id_product"];
+        $sth = $conn->prepare($sql);
+        $sth->execute();
+        $array_pag = $sth->fetchAll(PDO::FETCH_ASSOC);
+            
+        ?>
+
+
+
+<?php
+//вывод заголовка
+if(count($array_descr_section) > 0){
+               for($i=0; $i<count($array_descr_section); $i++){
+                    $title_section = $array_descr_section[$i]["title"];
+                    $description_section = $array_descr_section[$i]["description_section"];
+?>
+                    <div>
+                    <h1><?php echo $title_section ?></h1>
+                    <p><?php echo $description_section ?></p>  
+                    </div>               
+<?php
+                }
+            }
+?>
+        <ul class="breadcrumb">
+            <li><a href="../index.php">Категории</a></li>
+            <li><?php echo $title_section ?></li>
+        </ul>
+        
+
+
+        <div class="second-card">
+        <?php     
+            if(count($array_pag) > 0){
+               for($i=0; $i<count($array_pag); $i++){
+                    $title=$array_pag[$i]["title"];
+                    $main_section=$array_pag[$i]["main_section"];
+                    $img=$array_pag[$i]["img"];
+                    $alt=$array_pag[$i]["alt"];
+                    $id_product=$array_pag[$i]["id_product"];
                     ?>
                     <a href="product_page.php?id_product=<?php echo $id_product?>&id_section=<?php echo  $page_id?>">
                     <div class="second-card_1">
@@ -122,7 +131,6 @@ $sql = "SELECT p_s_union.id_section FROM (
                     <?php
                 }
             }
-        }
     ?>    
     </div>
     <div class="pagination">

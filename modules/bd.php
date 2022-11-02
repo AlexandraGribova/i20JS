@@ -1,13 +1,16 @@
 <?php
-$servername = 'localhost';
-$database = 'i20store';
+$dsn='mysql:host=localhost;dbname=i20Store';
 $username = 'root';
 $password = '';
 // Создаем соединение
-$conn = new mysqli($servername, $username, $password, $database);
-// Проверяем соединение
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+try {
+$conn = new PDO(
+    $dsn, 
+	$username, 
+	$password
+);
+}catch (PDOException $e) {
+	die($e->getMessage());
 }
 ?>
 

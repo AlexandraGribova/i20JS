@@ -12,28 +12,27 @@
                 WHERE f_p.is_active=1 
                 GROUP BY p_s_union.id_section 
                 ORDER BY number desc";
+    $sth = $conn->prepare($sql);
+    $sth->execute();
+    $array = $sth->fetchAll(PDO::FETCH_ASSOC);
 
-    if($result = $conn->query($sql)){
-        if($result->num_rows > 0){
-            foreach($result as $row){
-                $id_section = $row["id_section"];
-                $title = $row["title"];
-                $description_section = $row["description_section"];
-                $number=$row["number"];
+
+    
+    for($i=0; $i<count($array); $i++)
+    {
+        $id_section = $array[$i]["id_section"];
+                $title = $array[$i]["title"];
+                $description_section = $array[$i]["description_section"];
+                $number=$array[$i]["number"];
                 ?>
-                <a href="pages/section_page.php?id=<?php echo $id_section?>">
+                <a href="./pages/section_page.php?id=<?php echo $id_section?>">
                 <div class="first-card">
                     <time datetime="2017-11-6" class="first-card_time"><?php echo $number?></time>
                     <p class="first-card_text"> <?php echo $title ?></p>
                     <p style='color:dimgray;'><?php echo $description_section?></p>
                 </div>
                 </a>
-                <?php
-            }
-        }
-        else{
-            echo "<div>Все плохо</div>";
-        }
+                <?php 
     }
 
 ?>
